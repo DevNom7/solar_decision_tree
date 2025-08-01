@@ -1,16 +1,38 @@
-# solar_decision_tree
+# 🌞 Solar vs EV — Decision Tree App
 
-A new Flutter project.
+This Flutter app helps users decide whether investing in **solar panels** or an **electric vehicle** is the better fit based on their lifestyle, goals, and location.
 
-## Getting Started
+Built as a learning project to practice clean UI, navigation, and decision-based logic using Dart + Flutter.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Clean welcome screen with a bold CTA
+- Interactive decision tree (Yes/No flow)
+- Smart logic using a custom `DecisionNode` model
+- Navigation using `Navigator.push`
+- Scalable file/folder structure (screens, models, data)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 📱 Screenshots
+
+| Intro Screen | Decision Screen |
+|--------------|------------------|
+| ![Intro](screenshots/intro.png) | ![Decision](screenshots/decision.png) |
+
+---
+
+## 🧠 What I Learned
+
+- Flutter widget structure and layout
+- Stateless vs Stateful Widgets
+- Navigation with `Navigator.push`
+- Creating and linking new screens
+- Designing a data model (`DecisionNode`) for branching logic
+- Writing clean, readable Dart code
+
+---
+
+## 📂 Folder Structure
