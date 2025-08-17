@@ -27,6 +27,9 @@ jobs:
 
       - name: Build Flutter web
         run: flutter build web --release --base-href "/solar_decision_tree/"
+        
+      - name: Add 404 fallback
+        run: cp build/web/index.html build/web/404.html
 
       - name: Publish to GitHub Pages (gh-pages branch)
         uses: peaceiris/actions-gh-pages@v4
