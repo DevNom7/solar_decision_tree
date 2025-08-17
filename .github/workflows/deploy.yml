@@ -3,26 +3,32 @@ name: Deploy Flutter Web to GitHub Pages
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
+      - main            # run on every push to main
+  workflow_dispatch:     # allow manual "Run workflow"
 
+permissions:
+  contents: write        # needed to push to gh-pages
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
-        with: { channel: stable }
 
-      - name: Install deps
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
         run: flutter pub get
 
-      # IMPORTANT: base-href must match your repo name for a project page
-      - name: Build web
+      - name: Build Flutter web
         run: flutter build web --release --base-href "/solar_decision_tree/"
 
-      - name: Publish to gh-pages
+      - name: Publish to GitHub Pages (gh-pages branch)
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
