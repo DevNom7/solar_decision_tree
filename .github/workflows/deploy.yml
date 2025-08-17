@@ -2,23 +2,27 @@ name: Deploy Flutter Web to GitHub Pages
 
 on:
   push:
-    branches:
-      - main            # run on every push to main
-  workflow_dispatch:     # allow manual "Run workflow"
+    branches: [ main ]
+  workflow_dispatch:
 
+# Permissions required by actions/deploy-pages
 permissions:
-  contents: write        # needed to push to gh-pages
+  contents: read
+  pages: write
+  id-token: write
+
+# Prevent overlapping deploys
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
           channel: stable
 
@@ -27,13 +31,24 @@ jobs:
 
       - name: Build Flutter web
         run: flutter build web --release --base-href "/solar_decision_tree/"
-        
+
+      # SPA fallback for Flutter routes
       - name: Add 404 fallback
         run: cp build/web/index.html build/web/404.html
 
-      - name: Publish to GitHub Pages (gh-pages branch)
-        uses: peaceiris/actions-gh-pages@v4
+      # Package the site as a Pages artifact
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/web
-          force_orphan: true
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
